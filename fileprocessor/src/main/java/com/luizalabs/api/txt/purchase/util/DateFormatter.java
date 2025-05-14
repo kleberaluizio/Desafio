@@ -9,13 +9,8 @@ import java.util.Date;
 public class DataFormatter {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-    public static LocalDate format(String stringDate) {
-        Date date = null;
-        try {
-            date = simpleDateFormat.parse(stringDate);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+    public static LocalDate format(String stringDate) throws ParseException {
+        Date date = simpleDateFormat.parse(stringDate);
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 }
