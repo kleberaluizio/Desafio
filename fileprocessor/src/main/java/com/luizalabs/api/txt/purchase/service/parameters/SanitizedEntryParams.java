@@ -1,5 +1,7 @@
 package com.luizalabs.api.txt.purchase.service.parameters;
 
+import com.luizalabs.api.txt.purchase.exception.InvalidFileEntriesException;
+
 import java.math.BigDecimal;
 
 public class SanitizedEntryParams {

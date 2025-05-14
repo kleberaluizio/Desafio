@@ -1,6 +1,7 @@
 package com.luizalabs.api.txt.purchase.service;
 
 import com.luizalabs.api.txt.purchase.controller.dto.TxtProcessingRequest;
+import com.luizalabs.api.txt.purchase.exception.InvalidFileEntriesException;
 import com.luizalabs.api.txt.purchase.service.parameters.InputErrors;
 import com.luizalabs.api.txt.purchase.domain.Order;
 import com.luizalabs.api.txt.purchase.domain.Product;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -23,24 +23,27 @@ public class FileProcessorServiceBean {
         Map<Integer, Purchase> purchasesByUserId = new HashMap<>();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getFileInputStream()))) {
-            InputErrors error = new InputErrors();
+            InputErrors fileErrors = new InputErrors(request.getFileName());
+
             String rawEntry;
-
             while ((rawEntry = reader.readLine()) != null) {
-                SanitizedEntryParams entry = new SanitizedEntryParams(rawEntry);
+                SanitizedEntryParams entry = getSanitizedEntryOrCollectError(rawEntry, fileErrors);
 
+                if (!fileErrors.isEmpty()) {
+                    continue;
+                }
                 if (isOrderIdIgnoredByFilter(entry.orderId, request.getFilteredOrderId())) {
                     continue;
                 }
-
                 if (isDateIgnoredByDateRangeFilter(entry.date, request.getStartDate(), request.getEndDate())) {
                     continue;
                 }
 
                 addEntryToUserPurchase(entry, purchasesByUserId);
+            }
 
-                error.incrementCurrentLine();
-                System.out.println(entry.userId + " " + entry.userName + " " + entry.orderId + " " + entry.productId + " " + entry.productValue + " " + entry.date);
+            if (!fileErrors.isEmpty()){
+                throw new InvalidFileEntriesException(fileErrors.getErrorDescription());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -77,5 +80,15 @@ public class FileProcessorServiceBean {
 
         order.addProduct(product);
     }
-
+    
+    private SanitizedEntryParams getSanitizedEntryOrCollectError(String rawEntry, InputErrors fileErrors) {
+        try{
+            SanitizedEntryParams entry = new SanitizedEntryParams(rawEntry);
+            fileErrors.incrementCurrentLine();
+            return entry;
+        } catch (Exception e) {
+            fileErrors.addCurrentLineToErrorListAndIncrement();
+        }
+        return null;
+    }
 }
