@@ -10,6 +10,8 @@ public class InputErrors {
     }
 
     public String getErrorDescription() {
+        message.deleteCharAt(message.length() - 1); // Remove last comma
+        message.append(".");
         return message.toString();
     }
 
@@ -19,9 +21,9 @@ public class InputErrors {
 
     public void addCurrentLineToErrorListAndIncrement() {
         if (message.isEmpty()) {
-            message.append("The following lines in the file (").append(fileName).append(") are not in the correct format: ");
+            message.append("The following lines in the file (").append(fileName).append(") are not in the correct format:");
         }
-        message.append(currentLine).append(", ");
+        message.append(" ").append(currentLine).append(",");
         this.currentLine++;
     }
 
