@@ -1,4 +1,4 @@
-package com.luizalabs.api.txt.purchase.factories;
+package com.luizalabs.api.txt.purchase.controller.dto.factory;
 
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;

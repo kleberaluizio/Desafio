@@ -1,6 +1,6 @@
 package com.luizalabs.api.txt.purchase.controller.dto;
 
-import com.luizalabs.api.txt.purchase.factories.FileFactory;
+import com.luizalabs.api.txt.purchase.controller.dto.factory.FileFactory;
 import com.luizalabs.api.txt.purchase.exception.InvalidFilterParameterFormatException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
