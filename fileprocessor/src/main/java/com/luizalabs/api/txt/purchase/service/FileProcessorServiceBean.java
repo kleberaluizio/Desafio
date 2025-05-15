@@ -53,12 +53,15 @@ public class FileProcessorServiceBean {
     }
 
     private boolean isOrderIdIgnoredByFilter(int entryOrderId, Integer filteredOrderId) {
-        return filteredOrderId != null && !filteredOrderId.equals(entryOrderId);
+        if (filteredOrderId == null) {
+            return false; // If no filter is defined, do not ignore any orderId
+        }
+        return !filteredOrderId.equals(entryOrderId);
     }
 
     private boolean isDateIgnoredByDateRangeFilter(String entryDateStr, LocalDate startDate, LocalDate endDate ) {
         if (startDate == null && endDate == null) {
-            return false;
+            return false; // If no filter is defined, do not ignore any entry date
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate entryDate = LocalDate.parse(entryDateStr, formatter);
