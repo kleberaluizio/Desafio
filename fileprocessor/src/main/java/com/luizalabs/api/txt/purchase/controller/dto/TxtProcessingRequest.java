@@ -34,9 +34,13 @@ public class TxtProcessingRequest {
         LocalDate endDate = parseDateOrCollectError(endDateStr, errors, "end_date");
 
         boolean hasIncompleteDateRange = (startDate == null && endDate != null) || (startDate != null && endDate == null);
-
         if (hasIncompleteDateRange) {
             errors.append("Both 'start_date' and 'end_date' parameters must be either provided or both omitted.").append("\n");
+        }
+
+        boolean isValidDateRange = (startDate != null && endDate != null) && (startDate.equals(endDate) || startDate.isBefore(endDate));
+        if (!isValidDateRange) {
+            errors.append("Invalid date range: 'start_date' must be before or equal to 'end_date'.\n");
         }
 
         if (!errors.isEmpty()) {
