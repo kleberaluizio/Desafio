@@ -11,6 +11,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 class TxtProcessingRequestTest {
 
+    @ParameterizedTest(name ="{3}")
+    @DisplayName("Should create with success TxtProcessingRequest when inputs are valid: ")
+    @CsvSource(
+            value = {
+                    "null, null, null, Without optional filters",
+                    "1, 1957-09-16, 2025-05-15, With optional filters"},
+            nullValues = "null")
+    void shouldCreateTxtProcessingRequest_whenValidInput(String orderIdStr, String startDateStr, String endDateStr, String message) {
+        MultipartFile validFile = FileFactory.validFile();
+        Assertions.assertDoesNotThrow(()->TxtProcessingRequest.from(validFile, orderIdStr, startDateStr, endDateStr));
+    }
+
     @Test
     @DisplayName("Should throw InvalidFilterParameterFormatException when file type is not text/plain")
     void shouldThrowInvalidFilterParameterFormatException_WhenFileTypeIsNotPlainText() {
