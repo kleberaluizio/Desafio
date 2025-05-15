@@ -38,8 +38,7 @@ public class TxtProcessingRequest {
             errors.append("Both 'start_date' and 'end_date' parameters must be either provided or both omitted.").append("\n");
         }
 
-        boolean isValidDateRange = (startDate != null && endDate != null) && (startDate.equals(endDate) || startDate.isBefore(endDate));
-        if (!isValidDateRange) {
+        if (!isValidDateRange(startDate, endDate)) {
             errors.append("Invalid date range: 'start_date' must be before or equal to 'end_date'.\n");
         }
 
@@ -90,5 +89,10 @@ public class TxtProcessingRequest {
             errors.append("Invalid value for '").append(label).append("'. Expected format: yyyy-MM-dd").append("\n");
         }
         return null;
+    }
+
+    private static boolean isValidDateRange(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) return true;
+        return startDate.equals(endDate) || startDate.isBefore(endDate);
     }
 }

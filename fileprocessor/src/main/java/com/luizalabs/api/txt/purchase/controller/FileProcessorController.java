@@ -24,7 +24,7 @@ public class FileProcessorController {
         this.service = service;
     }
 
-    @PostMapping("process")
+    @PostMapping("/process")
     public ResponseEntity<?> process(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value="order_id", required = false) String orderIdStr,
