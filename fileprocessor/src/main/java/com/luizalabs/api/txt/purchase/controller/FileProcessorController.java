@@ -4,7 +4,7 @@ import com.luizalabs.api.txt.purchase.controller.dto.TxtProcessingRequest;
 import com.luizalabs.api.txt.purchase.domain.Purchase;
 import com.luizalabs.api.txt.purchase.exception.InvalidFileEntriesException;
 import com.luizalabs.api.txt.purchase.exception.InvalidFilterParameterFormatException;
-import com.luizalabs.api.txt.purchase.service.FileProcessorServiceBean;
+import com.luizalabs.api.txt.purchase.service.FileProcessorService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +18,9 @@ import java.util.Collection;
 @RequestMapping("api/file")
 public class FileProcessorController {
 
-    private final FileProcessorServiceBean service;
+    private final FileProcessorService service;
 
-    public FileProcessorController(FileProcessorServiceBean service) {
+    public FileProcessorController(FileProcessorService service) {
         this.service = service;
     }
 

@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
-public class FileProcessorServiceBean {
+public class FileProcessorService {
 
     public Collection<Purchase> processFile(TxtProcessingRequest request) {
         Map<Integer, Purchase> purchasesByUserId = new HashMap<>();
