@@ -25,6 +25,10 @@ public class TxtProcessingRequest {
     public static TxtProcessingRequest from(MultipartFile file, String filteredOrderIdStr, String startDateStr, String endDateStr) {
         StringBuilder errors = new StringBuilder();
 
+        if (!file.getContentType().equals("text/plain")) {
+            errors.append("Invalid file type: only plain text files (.txt) are allowed.").append("\n");
+        }
+
         if (file.isEmpty()) {
             errors.append("File is empty").append("\n");
         }
