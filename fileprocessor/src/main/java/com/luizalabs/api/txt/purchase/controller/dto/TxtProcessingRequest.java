@@ -33,6 +33,12 @@ public class TxtProcessingRequest {
         LocalDate startDate = parseDateOrCollectError(startDateStr, errors, "start_date");
         LocalDate endDate = parseDateOrCollectError(endDateStr, errors, "end_date");
 
+        boolean hasIncompleteDateRange = (startDate == null && endDate != null) || (startDate != null && endDate == null);
+
+        if (hasIncompleteDateRange) {
+            errors.append("Both 'start_date' and 'end_date' parameters must be either provided or both omitted.").append("\n");
+        }
+
         if (!errors.isEmpty()) {
             throw new InvalidFilterParameterFormatException(errors.toString());
         }
