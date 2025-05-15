@@ -25,26 +25,13 @@ public class TxtProcessingRequest {
     public static TxtProcessingRequest from(MultipartFile file, String filteredOrderIdStr, String startDateStr, String endDateStr) {
         StringBuilder errors = new StringBuilder();
 
-        if (!file.getContentType().equals("text/plain")) {
-            errors.append("Invalid file type: only plain text files (.txt) are allowed.").append("\n");
-        }
-
-        if (file.isEmpty()) {
-            errors.append("File is empty").append("\n");
-        }
+        assertValidFileOrCollectError(file, errors);
 
         Integer filteredOrderId = parseOrderIdOrCollectError(filteredOrderIdStr, errors);
         LocalDate startDate = parseDateOrCollectError(startDateStr, errors, "start_date");
         LocalDate endDate = parseDateOrCollectError(endDateStr, errors, "end_date");
 
-        boolean hasIncompleteDateRange = (startDate == null && endDate != null) || (startDate != null && endDate == null);
-        if (hasIncompleteDateRange) {
-            errors.append("Both 'start_date' and 'end_date' parameters must be either provided or both omitted.").append("\n");
-        }
-
-        if (!isValidDateRange(startDate, endDate)) {
-            errors.append("Invalid date range: 'start_date' must be before or equal to 'end_date'.\n");
-        }
+        assertValidDatesOrCollectError(startDate, endDate, errors);
 
         if (!errors.isEmpty()) {
             throw new InvalidFilterParameterFormatException(errors.toString());
@@ -73,6 +60,15 @@ public class TxtProcessingRequest {
         return endDate;
     }
 
+    private static void assertValidFileOrCollectError(MultipartFile file, StringBuilder errors) {
+        if (!file.getContentType().equals("text/plain")) {
+            errors.append("Invalid file type: only plain text files (.txt) are allowed.").append("\n");
+        }
+
+        if (file.isEmpty()) {
+            errors.append("File is empty").append("\n");
+        }
+    }
 
     private static Integer parseOrderIdOrCollectError(String orderIdStr, StringBuilder errors) {
         if (orderIdStr == null) return null;
@@ -93,6 +89,17 @@ public class TxtProcessingRequest {
             errors.append("Invalid value for '").append(label).append("'. Expected format: yyyy-MM-dd").append("\n");
         }
         return null;
+    }
+
+    private static void assertValidDatesOrCollectError(LocalDate startDate, LocalDate endDate, StringBuilder errors) {
+        boolean hasIncompleteDateRange = (startDate == null && endDate != null) || (startDate != null && endDate == null);
+        if (hasIncompleteDateRange) {
+            errors.append("Both 'start_date' and 'end_date' parameters must be either provided or both omitted.").append("\n");
+        }
+
+        if (!isValidDateRange(startDate, endDate)) {
+            errors.append("Invalid date range: 'start_date' must be before or equal to 'end_date'.\n");
+        }
     }
 
     private static boolean isValidDateRange(LocalDate startDate, LocalDate endDate) {
