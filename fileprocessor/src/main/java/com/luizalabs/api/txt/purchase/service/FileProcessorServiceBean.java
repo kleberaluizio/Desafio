@@ -30,7 +30,7 @@ public class FileProcessorServiceBean {
                 SanitizedEntryParams entry = getSanitizedEntryOrCollectError(rawEntry, fileErrors);
 
                 if (!fileErrors.isEmpty()) {
-                    continue;
+                    continue; //Once an error was found, should not process any entry, just collect errors
                 }
                 if (isOrderIdIgnoredByFilter(entry.orderId, request.getFilteredOrderId())) {
                     continue;
