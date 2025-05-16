@@ -10,7 +10,7 @@ A arquitetura segue o padrão tradicional de camadas, camada de apresentação (
 
 ## Endpoints
 
-### `POST /api/v1/file/process`
+### `POST /api/v1/file-processing`
 
 Este endpoint recebe um arquivo `.txt` com registros de compras e aplica filtros opcionais por ID do pedido e intervalo de datas da compra (data de início e data de fim).
 
