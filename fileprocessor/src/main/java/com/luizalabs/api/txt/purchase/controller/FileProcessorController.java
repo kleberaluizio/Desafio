@@ -1,10 +1,12 @@
 package com.luizalabs.api.txt.purchase.controller;
 
+import com.luizalabs.api.txt.purchase.controller.dto.ErrorResponse;
 import com.luizalabs.api.txt.purchase.controller.dto.TxtProcessingRequest;
 import com.luizalabs.api.txt.purchase.domain.Purchase;
 import com.luizalabs.api.txt.purchase.exception.InvalidFileEntriesException;
 import com.luizalabs.api.txt.purchase.exception.InvalidFilterParameterFormatException;
 import com.luizalabs.api.txt.purchase.service.FileProcessorService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/file")
@@ -36,7 +41,7 @@ public class FileProcessorController {
             Collection<Purchase> data = this.service.processFile(request);
             return ResponseEntity.ok(data);
         }catch (InvalidFilterParameterFormatException | InvalidFileEntriesException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return new ResponseEntity<>(ErrorResponse.from(e), HttpStatus.BAD_REQUEST);
         }
     }
 }
