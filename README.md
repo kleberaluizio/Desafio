@@ -1,4 +1,4 @@
-# Desafio LuizaLabs: Integração de Sistemas e Normalização de Dados
+# Desafio: Integração de Sistemas e Normalização de Dados
 
 Este projeto tem como objetivo construir um sistema capaz de processar um arquivo de pedidos desnormalizado, transformando-o em um formato JSON normalizado. A comunicação com o sistema será realizada através de uma API REST, que receberá o arquivo para processamento e retornará o resultado.
 
