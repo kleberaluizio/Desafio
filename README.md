@@ -23,6 +23,16 @@ Este endpoint recebe um arquivo `.txt` com registros de compras e aplica filtros
 | `start_date` | string  | Não         | Data inicial do período de filtro, no formato `YYYY-MM-DD` (ex: `2025-12-31`).                                                           |
 | `end_date`   | string  | Não         | Data final do período de filtro, no formato `YYYY-MM-DD` (ex: `2026-01-15`).                                                             |
 
+**Exemplo de Requisição `POST` com `curl` utilizando todos os parâmetros:**
+
+```bash
+curl -X POST http://localhost:8080/api/v1/file-processing \
+  -F "file=@/caminho/para/o/arquivo.txt" \
+  -F "order_id=250" \
+  -F "start_date=2021-06-01" \
+  -F "end_date=2021-06-30"
+```
+
 **Respostas:**
 
   * **`200 OK`:** Retorna um array JSON contendo a lista de registros de compras processados e normalizados.
