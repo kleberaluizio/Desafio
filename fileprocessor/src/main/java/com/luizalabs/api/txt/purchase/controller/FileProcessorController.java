@@ -7,6 +7,7 @@ import com.luizalabs.api.txt.purchase.exception.InvalidFileEntriesException;
 import com.luizalabs.api.txt.purchase.exception.InvalidFilterParameterFormatException;
 import com.luizalabs.api.txt.purchase.service.FileProcessorService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class FileProcessorController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> process(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value="order_id", required = false) String orderIdStr,
